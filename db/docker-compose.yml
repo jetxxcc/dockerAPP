@@ -1,0 +1,27 @@
+version: '3'
+services:
+  web:
+    image: php:apache
+    container_name: ../app/index.php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: mcr.microsoft.com/mssql/server
+    container_name: ../app/index.php
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+      ACCEPT_EULA: Y
+      MSSQL_DATABASE: ${MSSQL_DATABASE}
+      MSSQL_USER: ${MSSQL_USER}
+      MSSQL_PASSWORD: ${MSSQL_PASSWORD}
+    volumes:
+      - ./db:/var/opt/mssql
